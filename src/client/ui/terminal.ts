@@ -15,6 +15,7 @@ import { engineLabel, providerUsageNote, providerUsageState, providerWaitingLabe
 import { naturalKey } from './termkeys';
 import { termTabs } from './termtabs';
 import { dictateField, dictation } from './dictate';
+import { identityButton } from './worker-identity';
 
 /** A line to scroll to once the terminal has loaded: a search hit (see search.ts). */
 export interface TerminalFind {
@@ -149,7 +150,7 @@ export function openTerminal(net: Net, workerId: string, onChanges?: () => void,
   );
   host.append(mic.live);
   // The keypad has an Esc of its own, and a 🎤 on its prompt box.
-  const el = h('div.modal.term', { role: 'dialog', 'aria-label': `${info.name} terminal` }, h('header', {}, dot, title, pill, cost, viewers, typed, modelsBtn, keypad ? null : mic.button, keypad ? null : escBtn, onChanges ? changesBtn : null, hideBtn, closeBtn), tabs.bar, host, tabs.pages, keypad);
+  const el = h('div.modal.term', { role: 'dialog', 'aria-label': `${info.name} terminal` }, h('header', {}, dot, title, pill, cost, viewers, typed, modelsBtn, keypad ? null : mic.button, keypad ? null : escBtn, identityButton(net, workerId), onChanges ? changesBtn : null, hideBtn, closeBtn), tabs.bar, host, tabs.pages, keypad);
 
   const term = new Terminal({
     fontFamily: 'ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace',

@@ -20,6 +20,7 @@ import { launchAcp } from './acp.js';
 import { clockWork } from './clock.js';
 import { childEnv } from './env.js';
 import { midTurn } from './lifecycle.js';
+import { renameWorker } from './identity.js';
 import { restoreWorkers, saveWorkers } from './persist.js';
 import { WorkerPrs } from './pr.js';
 import { WIN, binScript, defaultShell, resolveCommand, shellRun, shq, writeOfficeCommands } from './process.js';
@@ -184,8 +185,10 @@ export class WorkerManager {
   get(id: string): WorkerInfo | undefined {
     return this.workers.get(id)?.info;
   }
-
-  /** The account a worker runs as (see RunAs), if not the office. */
+  rename(id: string, name: string): string | undefined {
+    const w = this.workers.get(id);
+    return w ? renameWorker(this.handleOf(w), name) : 'No such worker';
+  }
   ownerOf(id: string): string | undefined {
     return this.workers.get(id)?.owner;
   }
@@ -201,10 +204,7 @@ export class WorkerManager {
     }));
   }
 
-  /**
-   * Fetches the branch the project is on, so a worktree made next starts from what's on GitHub now
-   * (see Worktrees.fetch). Undefined when there's nothing to wait for.
-   */
+  /** Fetch the base for new worktrees. */
   fetchBase(): Promise<void> | undefined {
     return this.trees.fetch();
   }
