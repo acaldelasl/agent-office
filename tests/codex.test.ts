@@ -37,6 +37,19 @@ test('rejects unknown, malformed, empty, oversized, and child-scoped events', ()
   assert.equal(validateCodexHook('Stop', { session_id: 'x', agent_id: 'c'.repeat(161) }), false);
 });
 
+test('floors in one building share an identical Codex hook command definition', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'office-shared-hook-'));
+  try {
+    const setup = (floor: string) => codex.prepare!({ dataDir: path.join(dir, floor), hookDir: dir, mcpScript: '/synthetic/mcp.js', dshProfile: 'acp' });
+    const first = setup('agricola');
+    const second = setup('sig');
+    assert.equal(first.hook, path.join(dir, 'agent-office-codex-hook.cjs'));
+    assert.equal(second.hook, first.hook);
+    assert.deepEqual(codexHookArgs(first.hook), codexHookArgs(second.hook));
+    assert.match(readFileSync(first.hook, 'utf8'), /AGENT_OFFICE_WORKER_ID/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('generates one stable CLI hook override per supported event', () => {
   const args = codexHookArgs('/tmp/office data/agent-office-codex-hook.cjs');
   assert.equal(args.length, CODEX_HOOK_EVENTS.length * 2);

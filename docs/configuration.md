@@ -8,6 +8,14 @@ The office keeps its data in `~/agent-office` (`--home` or `AGENT_OFFICE_HOME` t
 
 Already have a checkout? Pick its repository anyway: a checkout of it that's already where the workspace folder would clone it is used as it is. You can still start the office in a project, `agent-office ~/code/my-project`: that project becomes a floor, and the office keeps its data in `~/code/my-project/.agent-office` as it did before there were floors. An office that already ran in a project carries on in it when you start `agent-office` there again. An admin can take that project off the building in the elevator like any other floor.
 
+## Worker identities
+
+An admin on the worker's floor can open its terminal and choose **Name**, enter a display name (up to 64 characters), and save. Names persist across Office restarts and appear on worker cards and terminal headings in both 3D and `/lite`. Renaming does not send an agent prompt, change its role instructions or permissions, restart its process, or rename Git branches and worktrees. Worker IDs remain stable, and names need not be unique across floors.
+
+## Codex hook tracking across floors
+
+Codex workers use one helper in the building's data directory, so their command definitions remain identical across floors. Credentials and worker IDs stay in each worker's own environment; sharing the helper does not share their authorization. This avoids floor-specific command paths repeatedly invalidating review of session-flag hooks. Existing running terminals keep their original arguments until resumed. Review the exact definitions in `/hooks`; this change does not bypass hook trust or enable hooks automatically.
+
 ## Command line
 
 ```

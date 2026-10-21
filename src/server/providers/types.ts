@@ -7,6 +7,8 @@ import type { WorkerHandle } from '../workers/types.js';
 
 /** What a provider is set up with on one floor (see ProviderAdapter.prepare). */
 export interface ProviderFloor {
+  /** Share Codex's command definition across floors so reviewing one does not invalidate another. */
+  hookDir?: string;
   /** The floor's data dir, where hook helpers, homes and plugins go. */
   dataDir: string;
   /** bin/office-workers.js, the office's MCP server, for the agents that take one (see office-workers.ts). */

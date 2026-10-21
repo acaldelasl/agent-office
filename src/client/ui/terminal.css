@@ -1,7 +1,8 @@
 @import '@xterm/xterm/css/xterm.css';
 
 /* Terminal modal */
-.modal.term { width: min(1200px, 100%); height: min(820px, calc(100vh - 32px)); background: #1e1f2e; }
+/* A terminal is not a scroll container: focusing controls after a resize must not scroll its header off screen. */
+.modal.term { width: min(1200px, 100%); min-width: 0; max-width: 100%; height: min(820px, calc(100vh - 32px)); background: #1e1f2e; overflow: clip; }
 .modal.term header { background: var(--paper); }
 .modal.term .term-host { flex: 1; min-height: 0; padding: 8px 4px 4px 10px; background: #1e1f2e; }
 .modal.term .term-host .xterm { height: 100%; }

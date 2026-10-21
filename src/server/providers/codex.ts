@@ -90,7 +90,7 @@ export const codex: ProviderAdapter<CodexState, CodexSetup> = {
   id: 'codex',
   scrubEnv: ['CODEX_THREAD_ID', 'CODEX_INTERNAL_ORIGINATOR_OVERRIDE'],
   createState: () => ({ usage: new CodexUsageReader(), tools: new Map(), pending: new Set() }),
-  prepare: ({ dataDir, mcpScript }) => ({ hook: writeCodexHook(dataDir), mcpScript }),
+  prepare: ({ dataDir, hookDir, mcpScript }) => ({ hook: writeCodexHook(hookDir ?? dataDir), mcpScript }),
   launch({ h, args, prompt, resumeSessionId, setup }) {
     // Resumed too: Codex resumes on whatever its config says now, not on the model the session ran on.
     args = codexModelArgs(args, h.info.model, h.info.effort);

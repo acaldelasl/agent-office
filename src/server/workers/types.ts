@@ -13,6 +13,8 @@ export type Worktree = NonNullable<WorkerInfo['worktree']>;
 export interface HookEnv {
   url: string;
   token: string;
+  /** Stable building-wide helper directory; worker credentials still travel only in its environment. */
+  helperDir?: string;
 }
 
 /** Another floor's repository for a worker to work in too (see WorkerInfo.repos). */
